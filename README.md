@@ -8,7 +8,20 @@ It is intended to be a URL test framework and will validate that curl is install
 
 Each script is assumed to be largely self-contained and there is no guarantee of script execution order.
 
-All test scripts have to exist in the folder defined by TESTS_FOLDER, defaulting the "tests". The "tests" folder is assumed to be a peer of where unittests.sh is currently residing. The only requirement is that the test script has to end in ".sh", i.e. test1.sh. You can name the test scripts what you want. Disabling a test script should be done by renaming the file, e.g. test.sh.disabled.
+All test scripts have to exist in the folder defined by TESTS_FOLDER, defaulting the "tests". The "tests" folder is assumed to be a peer of where unittests.sh is currently residing.
+
+The only requirement is that the test script has to end in ".sh", i.e. test1.sh
+
+Here is the example tests subfolder from this repository:
+
+```
+-rw-r--r-- 1 chadders users 755 Jan 20 21:34 example-check-string-exists-in-output.cfg
+-rwx------ 1 chadders users 658 Jan 20 21:37 example-check-http-response-code.sh
+-rwx------ 1 chadders users 239 Jan 20 21:40 example-check-string-exists-in-output.sh
+-rw-r--r-- 1 chadders users 846 Jan 20 21:43 example-check-http-response-code.cfg
+```
+
+Disabling a test script should be done by renaming the file, e.g. test.sh.disabled.
 
 You can run a test script singly by specifying the name of the script on the command line. Not specifying a test script will run the full set of defined tests.
 
