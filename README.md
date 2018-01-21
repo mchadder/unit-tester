@@ -31,9 +31,9 @@ $ ./unittest.sh
 
 A test script can be as simple or as complicated as required. The only requirement is that the success or failure of a given test
 in the script is reported back by use of the check_output() function which has the syntax of:
- check_output <Actual Output> <Expected Output> <Comments>
-e.g.
- check_output "$CURL_OUTPUT" "$LOOK_FOR" "$OUTPUT_URL"
+```
+ check_output "<Actual Output>" "<Expected Output>" "<Comments>"
+```
 
 Here is a simple example of a cURL-based test script that issues curl and checks to see if a string exists in the output.
 ```
