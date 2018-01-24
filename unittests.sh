@@ -1,7 +1,6 @@
 #!/bin/bash
-#
 SCRIPT_NAME="Unit-Tester"
-SCRIPT_VERSION="0.5"
+SCRIPT_VERSION="0.7"
 COPYRIGHT_NOTICE="(c) Chadders 2018"
 
 CONFIG_FILE="unittests.cfg"
@@ -44,8 +43,9 @@ function check_dependencies() {
 }
 
 function check_output() {
-  # $1 - Actual Output, $2 - Expected Output, $3 - Test Name.
-  STATE=""
+  # $1 - Actual Output, $2 - Expected Output, $3 - Test Name, $4 - Elapsed Time, $5 - Comment
+  local STATE=""
+
   if [[ "$1" == "$2" ]]
   then
     if [ "$SHOW_PASSES" == "Y" ]
@@ -62,8 +62,50 @@ function check_output() {
   # Output in CSV style
   if [ "$STATE" != "" ]
   then
-    echo "\"${FILENAME}\",\"${STATE}\",\"$1\",\"$2\",\"$3\""
+    echo "\"${FILENAME}\",\"${STATE}\",\"$1\",\"$2\",\"$3\",\"$4\",\"$5\""
   fi
+}
+
+# Example call:
+# curl_test "${TEST_RESOURCE}/1" "415" "http_code" "application/chadders" "Invalid Accept Header"
+function curl_test() {
+
+# TEST_CURL_CONFIG is set by a given test
+
+local TEST_URL_PATTERN="${URL_PREFIX}/$1"
+local TEST_CURL_RESPONSE="$2"
+local TEST_CURL_WRITEOUT="$3"
+local TEST_ACCEPT_HEADER="$4"
+local TEST_COMMENT="$5"
+
+if [ "${TEST_CURL_RESPONSE}" == "" ]
+then
+  TEST_CURL_RESPONSE="200"
+fi
+
+if [ "${TEST_CURL_WRITEOUT}" == "" ]
+then
+  TEST_CURL_WRITEOUT="http_code"
+fi
+
+# Loop around each field (via brace expansion)
+for TEST_OUTPUT_URL in $(eval echo "${TEST_URL_PATTERN}");
+do
+  local TEST_START=`date +%s`
+
+  if [ "${TEST_ACCEPT_HEADER}" == "" ]
+  then
+    TEST_CURL_OUTPUT=`curl -K "${TEST_CURL_CONFIG}" -w "%{${TEST_CURL_WRITEOUT}}" "${TEST_OUTPUT_URL}" -o /dev/null`
+  else
+    TEST_CURL_OUTPUT=`curl -K "${TEST_CURL_CONFIG}" -H "Accept: ${TEST_ACCEPT_HEADER}" -w "%{${TEST_CURL_WRITEOUT}}" "${TEST_OUTPUT_URL}" -o /dev/null`
+  fi
+
+  local TEST_END=`date +%s`
+  local TEST_RUNTIME=$((TEST_END-TEST_START))
+
+  check_output "${TEST_CURL_OUTPUT}" "${TEST_CURL_RESPONSE}" "${TEST_OUTPUT_URL}" \
+               "${TEST_RUNTIME}" "Test on ${TEST_CURL_WRITEOUT} returns ${TEST_CURL_RESPONSE} ${TEST_COMMENT}"
+done
 }
 
 dbg "Start Script"
@@ -73,6 +115,7 @@ check_dependencies
 dbg "Checked Dependencies"
 
 export -f check_output
+export -f curl_test
 
 # The tester can run a specific test script via $1
 # Need to check if the script exists first, error otherwise
