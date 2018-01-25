@@ -77,13 +77,13 @@ The output is in CSV format for easy importing into spreadsheets or parsing and 
 "TEST_SCRIPT_NAME","STATUS","ACTUAL_OUTPUT","EXPECTED_OUTPUT","OUTPUT_URL","ELAPSED_TIME_SECS","COMMENT"
 
 ```
-"example-check-http-response-code.sh","FAIL","000","200","http://localhost:8000/Party/1?fields=dob"
-"example-check-http-response-code.sh","FAIL","000","200","http://localhost:8000/Party/1?fields=lastname"
-"example-check-http-response-code.sh","FAIL","000","200","http://localhost:8000/Party/1?fields=firstname"
-"example-check-http-response-code.sh","FAIL","000","200","http://localhost:8000/Party/2?fields=dob"
-"example-check-http-response-code.sh","FAIL","000","200","http://localhost:8000/Party/2?fields=lastname"
-"example-check-http-response-code.sh","FAIL","000","200","http://localhost:8000/Party/2?fields=firstname"
-"example-check-string-exists-in-output.sh","FAIL","","</body>","http://localhost:8000"
+"example-check-http-response-code.sh","FAIL","000","200","http://localhost:8000/Party/1?fields=dob","0",""
+"example-check-http-response-code.sh","FAIL","000","200","http://localhost:8000/Party/1?fields=lastname","0",""
+"example-check-http-response-code.sh","FAIL","000","200","http://localhost:8000/Party/1?fields=firstname","0",""
+"example-check-http-response-code.sh","FAIL","000","200","http://localhost:8000/Party/2?fields=dob","0",""
+"example-check-http-response-code.sh","FAIL","000","200","http://localhost:8000/Party/2?fields=lastname","0",""
+"example-check-http-response-code.sh","FAIL","000","200","http://localhost:8000/Party/2?fields=firstname","0",""
+"example-check-string-exists-in-output.sh","FAIL","","</body>","http://localhost:8000","0",""
 ```
 
 # BASH Script Mechanisms and Solutions
