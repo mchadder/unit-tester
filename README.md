@@ -36,8 +36,8 @@ unittests.sh [<test_script_name.sh>]
 e.g.
 
 ```
-$ ./unittest.sh test1.sh
-$ ./unittest.sh
+$ ./unittests.sh test1.sh
+$ ./unittests.sh
 ```
 
 ## Example Test Script
@@ -45,7 +45,14 @@ $ ./unittest.sh
 A test script can be as simple or as complicated as required. The only requirement is that the success or failure of a given test
 in the script is reported back by use of the check_output() function which has the syntax of:
 ```
- check_output "<Actual Output>" "<Expected Output>" "<Comments>"
+ check_output "<Actual Output>" "<Expected Output>" "<Test Name>" "<Elapsed Time>" "<Comment>"
+```
+
+However, there is an exported function called "curl_test" which automates certain usages of curl and this does not need check_output() to be called.
+
+The definition is:
+```
+ curl_test "<URL Pattern>" "<Expected CURL WriteOut Response [200]>" "<CURL WriteOut Flag [http_code]>" "<Accept Header>" "<Comment>"
 ```
 
 Here is a simple example of a cURL-based test script that issues curl and checks to see if a string exists in the output.
@@ -56,11 +63,18 @@ CURL_OUTPUT=`curl -K "example-check-string-exists-in-output.cfg" "${URL}" | grep
 check_output "$CURL_OUTPUT" "$LOOK_FOR" "${URL}"
 ```
 
+And here are examples of using curl_test():
+
+```
+ curl_test "Resource/123"
+ curl_test "Resource?DOC" "application/json" "content_type"
+```
+
 ## Example Output
 
 The output is in CSV format for easy importing into spreadsheets or parsing and is of the following format:
 
-"TEST_SCRIPT_NAME","STATUS","ACTUAL_OUTPUT","EXPECTED_OUTPUT","OUTPUT_URL"
+"TEST_SCRIPT_NAME","STATUS","ACTUAL_OUTPUT","EXPECTED_OUTPUT","OUTPUT_URL","ELAPSED_TIME_SECS","COMMENT"
 
 ```
 "example-check-http-response-code.sh","FAIL","000","200","http://localhost:8000/Party/1?fields=dob"
